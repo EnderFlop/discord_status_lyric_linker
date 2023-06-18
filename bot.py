@@ -1,10 +1,10 @@
-import requests
+import grequests
 import time
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
-API_TOKEN = os.environ.get("AUTH")
+API_TOKEN = os.environ.get("AUTH") #https://discordhelp.net/discord-token
 
 def main():
     with open("./lyrics.txt", encoding="UTF-8") as file:
@@ -26,14 +26,15 @@ def main():
         current_measure = current_measure % measures_in_song #to loop song once done
         if current_measure in instructions.keys():
             print(current_measure, instructions[current_measure])
-            requests.patch(url="https://discord.com/api/v6/users/@me/settings", 
+            req = grequests.patch(url="https://discord.com/api/v6/users/@me/settings", 
                         headers= {"authorization": API_TOKEN}, 
                         json = {
                             "custom_status": {
                                 "text": instructions[current_measure],
                                 "emoji_name": "🎤"
-                            }
-                        })
+                        }})
+            grequests.send(req, grequests.Pool(1))
+
         time.sleep(seconds_to_a_measure)
         current_measure += 1
 
