@@ -1,5 +1,6 @@
 import grequests
 import time
+import fpstimer
 import os
 from dotenv import load_dotenv
 
@@ -17,10 +18,12 @@ def main():
     BPM = 200
     beats_in_a_measure = 4
     seconds_to_a_measure = beats_in_a_measure / (BPM / 60)
+    measures_to_a_second = 1 / seconds_to_a_measure
 
     measures_in_song = 62
 
     current_measure = 0
+    timer = fpstimer.FPSTimer(measures_to_a_second)
     while True:
         print(current_measure, time.time())
         current_measure = current_measure % measures_in_song #to loop song once done
@@ -35,7 +38,7 @@ def main():
                         }})
             grequests.send(req, grequests.Pool(1))
 
-        time.sleep(seconds_to_a_measure)
+        timer.sleep()
         current_measure += 1
 
 # https://support.discord.com/hc/en-us/community/posts/360054595731-Setting-Custom-Status-Programmatically
