@@ -11,7 +11,7 @@ API_TOKEN = os.environ.get("AUTH") #https://discordhelp.net/discord-token
 #https://spotify-lyric-api.herokuapp.com/?url=https://open.spotify.com/track/4Fg7pilwwzlTQtLXhO2ZlN?si=e1fa70b430e346a9?autoplay=true
 #use spotify api to get currently playing song. On new song, get lyrics and start counting milliseconds. When counter >= next up line, change status
 
-def main():
+def DisneyPT():
     with open("./lyrics.txt", encoding="UTF-8") as file:
         lines = file.read().splitlines()
         instructions = {}
@@ -48,4 +48,4 @@ def main():
 # https://support.discord.com/hc/en-us/community/posts/360054595731-Setting-Custom-Status-Programmatically
 
 if __name__ == "__main__":
-    main()
+    DisneyPT()
