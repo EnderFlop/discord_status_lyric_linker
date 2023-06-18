@@ -7,6 +7,10 @@ from dotenv import load_dotenv
 load_dotenv()
 API_TOKEN = os.environ.get("AUTH") #https://discordhelp.net/discord-token
 
+#use to get time synced lyrics for any spotify song! VVV
+#https://spotify-lyric-api.herokuapp.com/?url=https://open.spotify.com/track/4Fg7pilwwzlTQtLXhO2ZlN?si=e1fa70b430e346a9?autoplay=true
+#use spotify api to get currently playing song. On new song, get lyrics and start counting milliseconds. When counter >= next up line, change status
+
 def main():
     with open("./lyrics.txt", encoding="UTF-8") as file:
         lines = file.read().splitlines()
