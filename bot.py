@@ -13,6 +13,7 @@ API_TOKEN = os.environ.get("DISCORD_AUTH") #https://discordhelp.net/discord-toke
 SPOTIFY_ID = os.environ.get("SPOTIFY_ID")
 SPOTIFY_SECRET = os.environ.get("SPOTIFY_SECRET")
 SPOTIFY_REDIRECT = os.environ.get("SPOTIFY_REDIRECT")
+CUSTOM_STATUS = os.environ.get("STATUS")
 SCOPE = "user-read-currently-playing"
 TIMER = fpstimer.FPSTimer(2)
 
@@ -47,7 +48,7 @@ def main(sp, last_played_song, last_played_line):
                               headers={"authorization": API_TOKEN},
                               json={
                                   "custom_status": {
-                                      "text": "Hiii, I'm N0v4!",
+                                      "text": CUSTOM_STATUS,
                                       "emoji_name": ""
                                   }})
         grequests.send(req, grequests.Pool(1))
@@ -83,7 +84,7 @@ def input_thread():
     requests.patch(url="https://discord.com/api/v6/users/@me/settings", headers={"authorization": API_TOKEN},
                 json={
                     "custom_status": {
-                        "text": "Hiiii, I'm N0v4!",
+                        "text": CUSTOM_STATUS,
                         "emoji_name": ""
                     }})
     os._exit(0)
