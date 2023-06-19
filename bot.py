@@ -16,7 +16,7 @@ TIMER = fpstimer.FPSTimer(2)
 
 def main(last_played_song):
     auth = SpotifyOAuth(SPOTIFY_ID, SPOTIFY_SECRET, SPOTIFY_REDIRECT, scope=SCOPE)
-    TOKEN = auth.get_access_token()
+    TOKEN = auth.get_cached_token()
     sp = spotipy.Spotify(TOKEN["access_token"])
     
     song = sp.current_user_playing_track()
