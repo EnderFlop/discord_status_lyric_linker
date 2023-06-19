@@ -2,6 +2,8 @@ import os
 import sys
 import platform
 import subprocess
+import signal
+import requests
 
 def venv():
     os.system("python -m venv venv")
@@ -11,7 +13,7 @@ def venv():
     else:
         pip_executable = "venv/bin/pip"
         python_executable = "venv/bin/python"
-    subprocess.run([pip_executable, "install", "grequests", "fpstimer", "spotipy", "python_dotenv"])
+    subprocess.run([pip_executable, "install", "grequests", "fpstimer", "spotipy", "python_dotenv", "gevent"])
     subprocess.run([python_executable, "-m", "pip", "install", "--upgrade", "pip"])
 
 def create_env_file(token, client_id, client_secret, redirect_uri, status):
@@ -34,7 +36,27 @@ def main():
     venv()
 
     venv_python = os.path.join("venv", "Scripts" if platform.system() == "Windows" else "bin", "python")
-    subprocess.run([venv_python, "bot.py"])
+
+    process = subprocess.Popen([venv_python, "bot.py"])
+
+    def signal_handler(signal, frame):
+        API_TOKEN = os.environ.get("DISCORD_AUTH")
+        CUSTOM_STATUS = os.environ.get("STATUS")
+        requests.patch(url="https://discord.com/api/v6/users/@me/settings",
+                        headers={"authorization": API_TOKEN},
+                        json={
+                            "custom_status": {
+                                "text": CUSTOM_STATUS,
+                                "emoji_name": ""
+                            }
+                        })
+        process.send_signal(signal.SIGINT)
+        process.wait()
+        sys.exit(0)
+
+    signal.signal(signal.SIGINT, signal_handler)
+
+    process.wait()
 
 if __name__ == "__main__":
     main()
