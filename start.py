@@ -4,6 +4,7 @@ import platform
 import subprocess
 import signal
 import requests
+import time
 
 def venv():
     os.system("python -m venv venv")
@@ -34,22 +35,18 @@ def main():
         create_env_file(discord_token, spotify_client_id, spotify_client_secret, spotify_redirect_uri, custom_status)
 
     venv()
+    print("Initialized, starting...")
+    while True:
+        try:
+            process = subprocess.Popen(["./venv/bin/python", "bot.py"])
+            process.wait()
+            print("Restarting because script crashed...")
+        except KeyboardInterrupt:
+            break
 
-    venv_python = os.path.join("venv", "Scripts" if platform.system() == "Windows" else "bin", "python")
-
-    process = subprocess.Popen([venv_python, "bot.py"])
+    time.sleep(1)
 
     def signal_handler(signal, frame):
-        API_TOKEN = os.environ.get("DISCORD_AUTH")
-        CUSTOM_STATUS = os.environ.get("STATUS")
-        requests.patch(url="https://discord.com/api/v6/users/@me/settings",
-                        headers={"authorization": API_TOKEN},
-                        json={
-                            "custom_status": {
-                                "text": CUSTOM_STATUS,
-                                "emoji_name": ""
-                            }
-                        })
         process.send_signal(signal.SIGINT)
         process.wait()
         sys.exit(0)

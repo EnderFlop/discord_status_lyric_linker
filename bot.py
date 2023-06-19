@@ -55,7 +55,7 @@ def main(sp, last_played_song, last_played_line):
                                   headers={"authorization": API_TOKEN},
                                   json={
                                       "custom_status": {
-                                          "text": CUSTOM_STATUS,
+                                          "text": "🎵",
                                           "emoji_name": ""
                                       }
                                   })
@@ -74,15 +74,26 @@ def main(sp, last_played_song, last_played_line):
                     next_line = line["words"]
 
             if last_played_line != next_line:  # no need to update if the line hasn't changed.
-                status_req = grequests.patch(url="https://discord.com/api/v6/users/@me/settings",
-                                             headers={"authorization": API_TOKEN},
-                                             json={
-                                                 "custom_status": {
-                                                     "text": next_line,
-                                                     "emoji_name": ""
-                                                 }
-                                             })
-                grequests.send(status_req, grequests.Pool(1))
+                if next_line != "":
+                    status_req = grequests.patch(url="https://discord.com/api/v6/users/@me/settings",
+                                                headers={"authorization": API_TOKEN},
+                                                json={
+                                                    "custom_status": {
+                                                        "text": next_line,
+                                                        "emoji_name": ""
+                                                    }
+                                                })
+                    grequests.send(status_req, grequests.Pool(1))
+                else:
+                    status_req = grequests.patch(url="https://discord.com/api/v6/users/@me/settings",
+                                                headers={"authorization": API_TOKEN},
+                                                json={
+                                                    "custom_status": {
+                                                        "text": "🎵",
+                                                        "emoji_name": ""
+                                                    }
+                                                })
+                    grequests.send(status_req, grequests.Pool(1))
             last_played_line = next_line
             return song['item']['name'], last_played_line
 
@@ -121,4 +132,3 @@ if __name__ == "__main__":
         sp = spotipy.Spotify(TOKEN)
         print("Error!" + str(e) + "\nAlso reauthenticating Spotify.")
         time.sleep(3)
-        end_process()
