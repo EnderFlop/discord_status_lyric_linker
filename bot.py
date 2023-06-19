@@ -86,22 +86,23 @@ def main(sp, last_played_song, last_played_line):
     TIMER.sleep()
     return song['item']['name'], last_played_line
     
-
-if __name__ == "__main__":
-    last_played_song = ""
-    last_played_line = ""
+def get_spotipy():
     auth = SpotifyOAuth(SPOTIFY_ID, SPOTIFY_SECRET, SPOTIFY_REDIRECT, scope=SCOPE)
     if ".cache" in os.listdir("./"):
         TOKEN = auth.get_cached_token()["access_token"]
     else:
         TOKEN = auth.get_access_token(as_dict=False)
     sp = spotipy.Spotify(TOKEN)
+    return sp
+
+if __name__ == "__main__":
+    last_played_song = ""
+    last_played_line = ""
+    sp = get_spotipy()
     while True:
         #time is slept inside main()
         try:
             last_played_song, last_played_line = main(sp, last_played_song, last_played_line)
         except Exception as e:
-            TOKEN = auth.get_cached_token()["access_token"]
-            sp = spotipy.Spotify(TOKEN)
-            print("Error!" + str(e) + "\nAlso reauthenticating Spotify.")
+            sp = get_spotipy()
             time.sleep(3)
