@@ -1,5 +1,6 @@
 import grequests
 import requests
+import time
 import fpstimer
 import os
 import spotipy
@@ -83,4 +84,8 @@ if __name__ == "__main__":
     last_played_song = ""
     while True:
         #time is slept inside main()
-        last_played_song = main(last_played_song)
+        try:
+            last_played_song = main(last_played_song)
+        except:
+            print('some error who cares lmao')
+            time.sleep(3)
