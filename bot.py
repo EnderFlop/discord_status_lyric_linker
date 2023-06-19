@@ -25,6 +25,7 @@ def main(last_played_song, last_played_line, song, lyrics):
     #IF NO SONG IS PLAYING
     if not song:
         if last_played_line == "NO SONG":
+            TIMER.sleep()
             return "", "NO SONG"
         print("DISCORD: NOT CURRENTLY LISTENING UPDATE")
         requests.patch(url="https://discord.com/api/v6/users/@me/settings", headers= {"authorization": API_TOKEN}, 
@@ -61,14 +62,7 @@ def main(last_played_song, last_played_line, song, lyrics):
 
     #IF THERE ARE LYRICS
     else:                                                           
-        min_time = 100000000
-        next_line = ""
-        for line in lyrics["lines"]:
-            milliseconds_past_line = current_time - int(line["startTimeMs"])
-            if milliseconds_past_line < min_time and milliseconds_past_line > 0:
-                min_time = milliseconds_past_line
-                next_line = line["words"]
-
+        next_line = get_next_line(lyrics, current_time)
         if last_played_line != next_line: #no need to update if the line hasn't changed.
             print("DISCORD: NEW LYRIC LINE UPDATE")
             status_req = grequests.patch(url="https://discord.com/api/v6/users/@me/settings", headers= {"authorization": API_TOKEN}, 
@@ -82,6 +76,16 @@ def main(last_played_song, last_played_line, song, lyrics):
     milliseconds = (end - start) * 1000
     song["progress_ms"] += milliseconds
     return song['item']['name'], last_played_line
+
+def get_next_line(lyrics, current_time):
+    min_time = 100000000
+    next_line = ""
+    for line in lyrics["lines"]:
+        milliseconds_past_line = current_time - int(line["startTimeMs"])
+        if milliseconds_past_line < min_time and milliseconds_past_line > 0:
+            min_time = milliseconds_past_line
+            next_line = line["words"]
+    return next_line
 
 def on_new_song(sp):
     print("SPOTIFY: LISTENING REQUEST MADE")
@@ -112,6 +116,8 @@ if __name__ == "__main__":
         try:
             if main_loops % (LYRIC_UPDATE_RATE_PER_SECOND * SECONDS_TO_SPOTIFY_RESYNC) == 0: #we don't need to poll Spotify for the song contantly, once every 10 sec should work.
                 song, lyrics = on_new_song(sp)
+                if song["is_playing"] == False:
+                    song = None
             last_played_song, last_played_line = main(last_played_song, last_played_line, song, lyrics)
             main_loops += 1
         except Exception as e:
