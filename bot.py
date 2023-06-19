@@ -103,5 +103,5 @@ if __name__ == "__main__":
         except Exception as e:
             TOKEN = auth.get_cached_token()["access_token"]
             sp = spotipy.Spotify(TOKEN)
-            print("Error!" + e + "\nAlso reauthenticating Spotify.")
+            print("Error!" + str(e) + "\nAlso reauthenticating Spotify.")
             time.sleep(3)
