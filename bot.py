@@ -46,7 +46,7 @@ def main(sp, last_played_song, last_played_line):
     #IF NEW SONG, UPDATE BIO
     if song['item']['name'] != last_played_song:
         #using synchronous request to guarantee it goes through - lyrics can wait a sec
-        requests.patch(url="https://discord.com/api/v9/users/@me", headers= {"authorization": API_TOKEN}, json = {"bio": formatted_currently_playing})
+        requests.patch(url="https://discord.com/api/v9/users/@me", headers= {"authorization": API_TOKEN}, json = {"bio": formatted_currently_playing + "\n\n" + "https://github.com/EnderFlop/discord_status_lyric_linker"})
 
     #IF THERE ARE NO LYRICS
     if (lyrics["error"] == True or lyrics["syncType"] == "UNSYNCED"): 
