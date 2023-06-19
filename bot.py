@@ -20,6 +20,22 @@ def main(last_played_song):
     sp = spotipy.Spotify(TOKEN["access_token"])
     
     song = sp.current_user_playing_track()
+
+    #IF NO SONG IS PLAYING
+    if not song:
+        requests.patch(url="https://discord.com/api/v6/users/@me/settings", headers= {"authorization": API_TOKEN}, 
+            json = {
+                "custom_status": {
+                    "text": "Not Currently Listening",
+                    "emoji_name": "🎤"
+            }})
+        requests.patch(url="https://discord.com/api/v9/users/@me", headers= {"authorization": API_TOKEN}, 
+            json = {
+                "bio": "https://github.com/EnderFlop/discord_status_lyric_linker"
+            })
+        TIMER.sleep()
+        return ""
+
     track_id = song["item"]["uri"].split(":")[-1]
     current_time = song["progress_ms"]
     formatted_currently_playing = f"{song['item']['name']} -- {song['item']['artists'][0]['name']}"
