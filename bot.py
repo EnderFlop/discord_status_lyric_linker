@@ -101,5 +101,7 @@ if __name__ == "__main__":
         try:
             last_played_song, last_played_line = main(sp, last_played_song, last_played_line)
         except Exception as e:
-            print(e)
+            TOKEN = auth.get_cached_token()["access_token"]
+            sp = spotipy.Spotify(TOKEN)
+            print("Error!" + e + "\nAlso reauthenticating Spotify.")
             time.sleep(3)
