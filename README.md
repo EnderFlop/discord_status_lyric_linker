@@ -18,9 +18,8 @@ If you don't have a redirect URI, feel free to use "https://nova.zeusteam.dev" a
 ## Step 3: Find your Discord Authorization Token
 Follow the steps at [discordhelp.net](https://discordhelp.net/discord-token) to find your Discord Auth Token. Save it for later. Don't worry, there's no way for me to get your token. It stays between you and the requests to Discord.
 ## Step 4: Run the final installation script
-If you don't have Python, [install the latest version now](https://www.python.org/downloads/)
-In the code you downloaded earlier, create a new file named ".env" (no quotes). 
+If you don't have Python, [install the latest version now](https://www.python.org/downloads/)  
 Use a command prompt or terminal and run "python ./start.py" in the same directory as the "bot.py" and "start.py"
 
-**The script only works if it is running. There are ways to start running a Python script on system startup, or I have mine running 24/7 on my Raspberry Pi. Just remember to start the script!**
+**The script only works if it is running. There are ways to start running a Python script on system startup, or I have mine running 24/7 on my Raspberry Pi. Just remember to start the script!**  
 If you are on Linux, you can do "crontab -e" to edit crontab as your current user (or if you feel dangerous, do "sudo crontab -e", it will have a better success rate and runs before you login) and then enter "@reboot python /path/to/start.py" (replace "/path/to/start.py" with the real path to the start.py) and save it. This will run it automatically on reboot.
