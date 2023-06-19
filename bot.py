@@ -37,17 +37,19 @@ def main(last_played_song, last_played_line, song, lyrics):
         return "", "NO SONG"
 
     current_time = song["progress_ms"]
-    formatted_currently_playing = f"{song['item']['name']} -- {song['item']['artists'][0]['name']}"
+    song_name = song['item']['name']
+    artist_name = song['item']['artists'][0]['name']
+    formatted_currently_playing = f"{song_name} -- {artist_name}"
 
     #IF NEW SONG, UPDATE BIO
-    if song['item']['name'] != last_played_song:
+    if song_name != last_played_song:
         print("DISCORD: NEW SONG BIO UPDATE")
         requests.patch(url="https://discord.com/api/v9/users/@me", headers= {"authorization": API_TOKEN}, json = {"bio": formatted_currently_playing + "\n\n" + "https://github.com/EnderFlop/discord_status_lyric_linker"})
 
     #IF THERE ARE NO LYRICS
     if (lyrics["error"] == True or lyrics["syncType"] == "UNSYNCED"): 
-        #If we've already been here this song, don't bother changing again, just return.
-        if last_played_line == "NO LYRICS":
+        #If we've already been here (and it's the same song), don't bother changing again, just return.
+        if last_played_line == "NO LYRICS" and song_name == last_played_song:
             TIMER.sleep()
             return song['item']['name'], last_played_line
         print("DISCORD: NO SYNCED LYRICS UPDATE")
