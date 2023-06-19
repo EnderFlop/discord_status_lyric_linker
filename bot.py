@@ -1,6 +1,5 @@
 import grequests
 import requests
-import time
 import fpstimer
 import os
 import spotipy
@@ -15,12 +14,7 @@ SPOTIFY_REDIRECT = "https://enderflop.github.io/iowacitygraffiti/"
 SCOPE = "user-read-currently-playing"
 TIMER = fpstimer.FPSTimer(2)
 
-#use to get time synced lyrics for any spotify song! VVV
-#https://spotify-lyric-api.herokuapp.com/?url=https://open.spotify.com/track/4Fg7pilwwzlTQtLXhO2ZlN?si=e1fa70b430e346a9?autoplay=true
-#use spotify api to get currently playing song. On new song, get lyrics and start counting milliseconds. When counter >= next up line, change status
-
-def main():
-    start = time.time()
+def main(last_played_song):
     auth = SpotifyOAuth(SPOTIFY_ID, SPOTIFY_SECRET, SPOTIFY_REDIRECT, scope=SCOPE)
     TOKEN = auth.get_access_token()
     sp = spotipy.Spotify(TOKEN["access_token"])
@@ -31,6 +25,11 @@ def main():
     formatted_currently_playing = f"{song['item']['name']} -- {song['item']['artists'][0]['name']}"
     lyrics = requests.get(f"https://spotify-lyric-api.herokuapp.com/?trackid={track_id}").json()
     #these two requests take around 0.5 seconds.
+
+    #IF NEW SONG, UPDATE BIO
+    if song['item']['name'] != last_played_song:
+        #using synchronous request to guarantee it goes through - lyrics can wait a sec
+        requests.patch(url="https://discord.com/api/v9/users/@me", headers= {"authorization": API_TOKEN}, json = {"bio": formatted_currently_playing})
 
     #IF THERE ARE NO LYRICS
     if lyrics["error"] == True or lyrics["syncType"] == "UNSYNCED": 
@@ -60,15 +59,12 @@ def main():
                     }})
         grequests.send(status_req, grequests.Pool(1))
 
-    #UPDATE BIO REGARDLESS - takes too long to resolve, just commenting out for now
-    #bio_req = grequests.patch(url="https://discord.com/api/v9/users/@me", headers= {"authorization": API_TOKEN}, json = {"bio": formatted_currently_playing} )
-    #grequests.send(bio_req, grequests.Pool(1))
-    
-    print(start - time.time())
     TIMER.sleep()
+    return song['item']['name']
     
 
 if __name__ == "__main__":
+    last_played_song = ""
     while True:
         #time is slept inside main()
-        main()
+        last_played_song = main(last_played_song)
