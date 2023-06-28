@@ -20,6 +20,8 @@ Follow the steps at [discordhelp.net](https://discordhelp.net/discord-token) to 
 ## Step 4: Run the final installation script
 If you don't have Python, [install the latest version now](https://www.python.org/downloads/)  
 Use a command prompt or terminal and run "python ./start.py" in the same directory as the "bot.py" and "start.py"
+## Warning for Windows users
+If you are using Windows, you may find errors when you try to run the start.py file, with "`FileNotFoundError: [WinError 2] The system cannot find the file specified`" at the end. To get around this, go to the directory Python is installed in, and copy python.exe to C:\ and copy pip.exe from the Scripts folder to C:\. From there, open the start.py file in a text editor and go to line 12, change the text inside the quotes to C:\pip.exe. Then go to line 13 and do the same but with python.exe. The program will run fine after this. 
 
-**The script only works if it is running. There are ways to start running a Python script on system startup, or I have mine running 24/7 on my Raspberry Pi. Just remember to start the script!**  
+## The script only works if it is running. There are ways to start running a Python script on system startup, or I have mine running 24/7 on my Raspberry Pi. Just remember to start the script!**  
 If you are on Linux, you can do "crontab -e" to edit crontab as your current user (or if you feel dangerous, do "sudo crontab -e", it will have a better success rate and runs before you login) and then enter "@reboot python /path/to/start.py" (replace "/path/to/start.py" with the real path to the start.py) and save it. This will run it automatically on reboot.
