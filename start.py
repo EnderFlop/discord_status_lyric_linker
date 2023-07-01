@@ -21,7 +21,7 @@ except ImportError:
         # trunk-ignore(bandit/B603)
         subprocess.run(
             [
-                (pathlib.PurePath(sys.executable).parent / "pip.exe"),
+                (pathlib.PurePath(sys.executable).parent / "Scripts" / "pip.exe"),
                 "install",
                 "rebullet",
             ],
@@ -40,7 +40,7 @@ def venv():
             [sys.executable, "-m", "pip", "install", "--upgrade", "pip"], check=True
         )
     else:
-        pip_executable = pathlib.PurePath(sys.executable).parent / "pip.exe"
+        pip_executable = pathlib.PurePath(sys.executable).parent / "Scripts" / "pip.exe"
         # trunk-ignore(bandit/B603)
         subprocess.run(
             [
