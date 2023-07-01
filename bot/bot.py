@@ -97,8 +97,6 @@ def main(spotify, line_last_played):
                         json={"custom_status": {"text": next_line, "emoji_name": "🎵"}},
                         timeout=10,
                     )
-                    print_if_different(f"Current line: {next_line}", "")
-                    clear()
                     grequests.send(status_req, grequests.Pool(1))
                 else:
                     status_req = grequests.patch(
@@ -107,8 +105,6 @@ def main(spotify, line_last_played):
                         json={"custom_status": {"text": "", "emoji_name": "🎵"}},
                         timeout=10,
                     )
-                    print_if_different(f"Current line: {next_line}", "")
-                    clear()
                     grequests.send(status_req, grequests.Pool(1))
             line_last_played = next_line
             return song["item"]["name"], line_last_played
@@ -140,6 +136,7 @@ if __name__ == "__main__":
 
     def print_if_different(text, last_line):
         if text != last_line:
+            clear()
             print(text)
             last_line = text
 
