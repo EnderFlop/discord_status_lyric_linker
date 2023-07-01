@@ -126,6 +126,7 @@ def signal_handler():
 
 if __name__ == "__main__":
     last_played_line = ""
+    global song_last_line
     song_last_line = ""
     auth = SpotifyOAuth(SPOTIFY_ID, SPOTIFY_SECRET, SPOTIFY_REDIRECT, scope=SCOPE)
     if ".cache" in os.listdir("./"):
