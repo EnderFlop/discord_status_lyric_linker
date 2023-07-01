@@ -56,7 +56,6 @@ def main(spotify, line_last_played):
         track_id = song["item"]["uri"].split(":")[-1]
         current_time = song["progress_ms"]
         formatted_currently_playing = f"Currently playing: {song['item']['name']} -- {song['item']['artists'][0]['name']}"
-        print_if_different(formatted_currently_playing)
         lyrics = requests.get(
             f"https://spotify-lyric-api.herokuapp.com/?trackid={track_id}", timeout=10
         ).json()
@@ -97,6 +96,9 @@ def main(spotify, line_last_played):
                         json={"custom_status": {"text": next_line, "emoji_name": "🎵"}},
                         timeout=10,
                     )
+                    print_if_different(
+                        f"{formatted_currently_playing} \n Current Lyric: {next_line}"
+                    )
                     grequests.send(status_req, grequests.Pool(1))
                 else:
                     status_req = grequests.patch(
@@ -105,6 +107,7 @@ def main(spotify, line_last_played):
                         json={"custom_status": {"text": "", "emoji_name": "🎵"}},
                         timeout=10,
                     )
+                    print_if_different(formatted_currently_playing)
                     grequests.send(status_req, grequests.Pool(1))
             line_last_played = next_line
             return song["item"]["name"], line_last_played
