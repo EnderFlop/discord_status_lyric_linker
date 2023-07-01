@@ -126,7 +126,6 @@ def signal_handler():
 
 if __name__ == "__main__":
     last_played_line = ""
-    global song_last_line
     song_last_line = ""
     auth = SpotifyOAuth(SPOTIFY_ID, SPOTIFY_SECRET, SPOTIFY_REDIRECT, scope=SCOPE)
     if ".cache" in os.listdir("./"):
@@ -135,11 +134,12 @@ if __name__ == "__main__":
         TOKEN = auth.get_access_token(as_dict=False)
     spotify_access = spotipy.Spotify(TOKEN)
 
-    def print_if_different(text, last_line):
-        if text != last_line:
+    def print_if_different(text):
+        global song_last_line
+        if text != song_last_line:
             clear()
             print(text)
-            last_line = text
+            song_last_line = text
 
     signal.signal(
         signal.SIGINT, signal_handler
