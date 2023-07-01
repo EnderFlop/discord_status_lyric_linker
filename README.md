@@ -30,6 +30,7 @@ in the same directory as the "bot.py" and "start.py"
 
 ## The script only works if it is running. There are ways to start running a Python script on system startup, or I have mine running 24/7 on my Raspberry Pi. Just remember to start the script!\*\*
 
-If you are on Linux, you can do "crontab -e" to edit crontab as your current user (or if you feel dangerous, do "sudo crontab -e", it will have a better success rate and runs before you login) and then enter "@reboot python /path/to/start.py" (replace "/path/to/start.py" with the real path to the start.py) and save it. This will run it automatically on reboot.  
-Or you could make a systemd service, that's more complicated but can be managed on the fly rather than it just running in the background, including being able to view logs easily just incase something goes wrong.  
-Best way to run this is either a Raspberry Pi or, if you have a 24/7 pc/server, you could spring up a crontab or systemd service to make it run it (if the server is running Linux).
+If you are on Linux, you can do "crontab -e" to edit crontab as your current user (or if you feel dangerous, do "sudo crontab -e", it will have a better success rate and runs before you login) and then enter "@reboot python /path/to/start.py" (replace "/path/to/start.py" with the real path to the start.py) and save it. This will run it automatically on reboot.
+Or you could make a systemd service, that's more complicated but can be managed on the fly rather than it just running in the background, including being able to view logs easily just incase something goes wrong.
+
+
