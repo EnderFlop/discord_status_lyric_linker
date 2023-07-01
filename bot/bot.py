@@ -47,6 +47,7 @@ def main(spotify, line_last_played, last_song_played):
         )
         if formatted_currently_playing != last_song_played:
             print(formatted_currently_playing)
+            formatted_currently_playing = last_song_played
         lyrics = requests.get(
             f"https://spotify-lyric-api.herokuapp.com/?trackid={track_id}", timeout=10
         ).json()
@@ -132,6 +133,7 @@ if __name__ == "__main__":
             last_played_line, last_played_song = main(
                 spotify_access, last_played_line, last_played_song
             )
+
     except TypeError as e:
         print(e)
         TOKEN = auth.get_cached_token()["access_token"]

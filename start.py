@@ -105,7 +105,7 @@ def main():
 
             print("Restarting because script crashed...")
         except KeyboardInterrupt:
-            break
+            sys.exit(0)
 
 
 if __name__ == "__main__":
