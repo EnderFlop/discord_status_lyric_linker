@@ -97,7 +97,7 @@ def main(spotify, line_last_played):
                         timeout=10,
                     )
                     print_if_different(
-                        f"{formatted_currently_playing} \n Current Lyric: {next_line}"
+                        f"{formatted_currently_playing}\nCurrent Lyric: {next_line}"
                     )
                     grequests.send(status_req, grequests.Pool(1))
                 else:
