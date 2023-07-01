@@ -25,7 +25,8 @@ Follow the steps at [discordhelp.net](https://discordhelp.net/discord-token) to 
 ## Step 4: Run the final installation script
 
 If you don't have Python, [install the latest version now](https://www.python.org/downloads/)
-Use a command prompt or terminal and run "python ./start.py" (or "python start.py" if you're running plain cmd) in the same directory as the "bot.py" and "start.py"
+Use a command prompt or terminal and run "python ./start.py" ( "python start.py" if you're running plain cmd or "python .\start.py" in powershell) 
+in the same directory as the "bot.py" and "start.py"
 
 ## Warning for Windows users
 
