@@ -1,5 +1,3 @@
-import gevent.monkey
-gevent.monkey.patch_socket()
 import grequests
 import requests
 import time
@@ -55,7 +53,7 @@ def main(sp, last_played_song, last_played_line):
                                   headers={"authorization": API_TOKEN},
                                   json={
                                       "custom_status": {
-                                          "text": "🎵",
+                                          "text": "♪",
                                           "emoji_name": ""
                                       }
                                   })
@@ -89,8 +87,8 @@ def main(sp, last_played_song, last_played_line):
                                                 headers={"authorization": API_TOKEN},
                                                 json={
                                                     "custom_status": {
-                                                        "text": "🎵",
-                                                        "emoji_name": ""
+                                                    "text": "♪",
+                                                    "emoji_name": ""
                                                     }
                                                 })
                     grequests.send(status_req, grequests.Pool(1))
@@ -127,6 +125,7 @@ if __name__ == "__main__":
         while True:
             # time is slept inside main()
             last_played_song, last_played_line = main(sp, last_played_song, last_played_line)
+            time.sleep(0.5)
     except Exception as e:
         TOKEN = auth.get_cached_token()["access_token"]
         sp = spotipy.Spotify(TOKEN)
