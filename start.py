@@ -8,6 +8,12 @@ import subprocess
 import sys
 import time
 
+# N0v4 what kind of crack are you smoking?
+# Anyway I fixed a lot of the code base.
+# Soon gonna check if it works on Windows.
+
+
+
 try:
     from rebullet import Password
 except ImportError:
@@ -24,8 +30,6 @@ except ImportError:
     else:
         # trunk-ignore(bandit/B603)
         subprocess.run([sys.executable, "-m", "pip", "install", "rebullet"], check=True)
-# N0v4 what kind of crack are you smoking?
-
 
 def venv():
     if platform.system() != "Windows":
@@ -65,6 +69,9 @@ def create_env_file(creds: list):
 
 
 def get_credentials():
+    """Gets credentials.
+        And later returns them as a list for .env use.
+    """
     discord_token_prompt = Password("Enter Discord token: ")
     discord_token = discord_token_prompt.launch()
     spotify_client_id = input("Enter Spotify application client ID: ")
@@ -73,7 +80,8 @@ def get_credentials():
     try:
         if sys.argv[1] == "redirect":
             print(
-                "Your redirect URI can literally just be http://localhost/callback, it truly doesn't matter"
+                "Your redirect URI can literally just be http://localhost/callback"
+                "it truly doesn't matter"
             )
             spotify_redirect_uri = input("Enter Spotify application redirect URI: ")
     except IndexError:
@@ -91,12 +99,18 @@ def get_credentials():
 
 
 def signal_handler(term_signal, process):
+    """Signal handler.
+        Sends a SIGINT signal to process
+    """
     process.send_signal(term_signal.SIGINT)
     process.wait()
     sys.exit(0)
 
 
 def main():
+    """Main function.
+    generates a .env file if it doesn't exist and runs bot.py with credentials given.
+    """
     if not os.path.isfile(".env"):
         create_env_file(get_credentials())
 
@@ -119,7 +133,7 @@ def main():
 
     time.sleep(1)
 
-    signal.signal(signal.SIGINT, signal_handler(signal, process))
+    signal.signal(signal.SIGINT, signal_handler)
 
     process.wait()
 

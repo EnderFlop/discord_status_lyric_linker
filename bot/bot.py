@@ -23,9 +23,9 @@ SCOPE = "user-read-currently-playing"
 TIMER = fpstimer.FPSTimer(2)
 
 
-def main(sp, last_played_song, line_last_played):
+def main(spotify, line_last_played):
     try:
-        song = sp.current_user_playing_track()
+        song = spotify.current_user_playing_track()
 
         # IF NO SONG IS PLAYING
         if not song:
@@ -114,26 +114,25 @@ def signal_handler():
 
 
 if __name__ == "__main__":
-    last_played_song = ""
     last_played_line = ""
     auth = SpotifyOAuth(SPOTIFY_ID, SPOTIFY_SECRET, SPOTIFY_REDIRECT, scope=SCOPE)
     if ".cache" in os.listdir("./"):
         TOKEN = auth.get_cached_token()["access_token"]
     else:
         TOKEN = auth.get_access_token(as_dict=False)
-    sp = spotipy.Spotify(TOKEN)
+    spotify_access = spotipy.Spotify(TOKEN)
     signal.signal(
         signal.SIGINT, signal_handler
     )  # Register the signal handler for CTRL+C
     try:
         while True:
             # time is slept inside main()
-            last_played_song, last_played_line = main(
-                sp, last_played_song, last_played_line
+             last_played_line = main(
+                spotify_access, last_played_line
             )
-    except Exception as e:
+    except TypeError as e:
         print(e)
         TOKEN = auth.get_cached_token()["access_token"]
-        sp = spotipy.Spotify(TOKEN)
-        print("Error!" + str(e) + "\nAlso reauthenticating Spotify.")
+        spotify_access = spotipy.Spotify(TOKEN)
+        print(f"Error! {str(e)} \nAlso reauthenticating Spotify.")
         time.sleep(3)
