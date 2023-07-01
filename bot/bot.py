@@ -89,7 +89,16 @@ def main(spotify, line_last_played):
             if (
                 line_last_played != next_line
             ):  # no need to update if the line hasn't changed.
-                if next_line != "♪" or next_line != "":
+                if next_line == "♪":
+                    status_req = grequests.patch(
+                        url="https://discord.com/api/v6/users/@me/settings",
+                        headers={"authorization": API_TOKEN},
+                        json={"custom_status": {"text": "", "emoji_name": "🎵"}},
+                        timeout=10,
+                    )
+                    print_if_different(formatted_currently_playing)
+                    grequests.send(status_req, grequests.Pool(1))
+                elif next_line != "":
                     status_req = grequests.patch(
                         url="https://discord.com/api/v6/users/@me/settings",
                         headers={"authorization": API_TOKEN},
@@ -109,6 +118,7 @@ def main(spotify, line_last_played):
                     )
                     print_if_different(formatted_currently_playing)
                     grequests.send(status_req, grequests.Pool(1))
+
             line_last_played = next_line
             return song["item"]["name"], line_last_played
 
