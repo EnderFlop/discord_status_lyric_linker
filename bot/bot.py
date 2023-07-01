@@ -1,3 +1,6 @@
+"""Bot.py.
+    The bot file, sends requests to the discord api and spotify api to retrieve lyrics.
+"""
 import os
 import signal
 import sys
@@ -24,24 +27,16 @@ TIMER = fpstimer.FPSTimer(2)
 
 
 def clear():
+    """Clear the screen.
+    Non-platform specific.
+    """
     if sys.platform == "win32":
         os.system("cls")
     else:
         os.system("clear")
 
 
-last_line = ""
-
-
-def print_if_different(text):
-    global last_line
-    if text != last_line:
-        clear()
-        print(text)
-        last_line = text
-
-
-def main(spotify, line_last_played, last_song_played):
+def main(spotify, line_last_played):
     try:
         song = spotify.current_user_playing_track()
 
@@ -52,7 +47,7 @@ def main(spotify, line_last_played, last_song_played):
             requests.patch(
                 url="https://discord.com/api/v6/users/@me/settings",
                 headers={"authorization": API_TOKEN},
-                json={"custom_status": {"text": CUSTOM_STATUS, "emoji_name": ""}},
+                json={"custom_status": {"text": CUSTOM_STATUS, "emoji_name": "🎵"}},
                 timeout=10,
             )
             TIMER.sleep()
@@ -61,7 +56,7 @@ def main(spotify, line_last_played, last_song_played):
         track_id = song["item"]["uri"].split(":")[-1]
         current_time = song["progress_ms"]
         formatted_currently_playing = f"Currently playing: {song['item']['name']} -- {song['item']['artists'][0]['name']}"
-        print_if_different(formatted_currently_playing)
+        print_if_different(formatted_currently_playing, song_last_line)
         lyrics = requests.get(
             f"https://spotify-lyric-api.herokuapp.com/?trackid={track_id}", timeout=10
         ).json()
@@ -75,7 +70,7 @@ def main(spotify, line_last_played, last_song_played):
             req = grequests.patch(
                 url="https://discord.com/api/v6/users/@me/settings",
                 headers={"authorization": API_TOKEN},
-                json={"custom_status": {"text": "🎵", "emoji_name": ""}},
+                json={"custom_status": {"text": "", "emoji_name": "🎵"}},
                 timeout=10,
             )
             grequests.send(req, grequests.Pool(1))
@@ -99,17 +94,19 @@ def main(spotify, line_last_played, last_song_played):
                     status_req = grequests.patch(
                         url="https://discord.com/api/v6/users/@me/settings",
                         headers={"authorization": API_TOKEN},
-                        json={"custom_status": {"text": next_line, "emoji_name": ""}},
+                        json={"custom_status": {"text": next_line, "emoji_name": "🎵"}},
                         timeout=10,
                     )
+                    print_if_different(f"Current line: {next_line}", "")
                     grequests.send(status_req, grequests.Pool(1))
                 else:
                     status_req = grequests.patch(
                         url="https://discord.com/api/v6/users/@me/settings",
                         headers={"authorization": API_TOKEN},
-                        json={"custom_status": {"text": "🎵", "emoji_name": ""}},
+                        json={"custom_status": {"text": "", "emoji_name": "🎵"}},
                         timeout=10,
                     )
+                    print_if_different(f"Current line: {next_line}", "")
                     grequests.send(status_req, grequests.Pool(1))
             line_last_played = next_line
             return song["item"]["name"], line_last_played
@@ -131,22 +128,27 @@ def signal_handler():
 
 if __name__ == "__main__":
     last_played_line = ""
-    last_played_song = ""
+    song_last_line = ""
     auth = SpotifyOAuth(SPOTIFY_ID, SPOTIFY_SECRET, SPOTIFY_REDIRECT, scope=SCOPE)
     if ".cache" in os.listdir("./"):
         TOKEN = auth.get_cached_token()["access_token"]
     else:
         TOKEN = auth.get_access_token(as_dict=False)
     spotify_access = spotipy.Spotify(TOKEN)
+
+    def print_if_different(text, last_line):
+        if text != last_line:
+            clear()
+            print(text)
+            last_line = text
+
     signal.signal(
         signal.SIGINT, signal_handler
     )  # Register the signal handler for CTRL+C
     try:
         while True:
             # time is slept inside main()
-            last_played_line, last_played_song = main(
-                spotify_access, last_played_line, last_played_song
-            )
+            last_played_line = main(spotify_access, last_played_line)
 
     except TypeError as e:
         print(e)

@@ -8,6 +8,10 @@ plugins:
       uri: https://github.com/trunk-io/plugins
 lint:
   enabled:
+    - checkov@2.3.309
+    - taplo@0.7.0
+    - trivy@0.42.1
+    - yamllint@1.32.0
     - bandit@1.7.5
     - black@23.3.0
     - git-diff-check
@@ -23,7 +27,7 @@ runtimes:
 actions:
   disabled:
     - trunk-announce
-    - trunk-check-pre-push
-    - trunk-fmt-pre-commit
   enabled:
+    - trunk-check-pre-push
     - trunk-upgrade-available
+    - trunk-fmt-pre-commit

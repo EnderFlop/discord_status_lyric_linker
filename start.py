@@ -1,3 +1,6 @@
+"""Start.py.
+    Intitialize the environment variables and start the bot.
+"""
 import os
 import pathlib
 import platform
@@ -13,6 +16,9 @@ from getpass import getpass
 
 
 def venv():
+    """Start a venv on linux and install packages.
+    otherwise just install packages on Windows.
+    """
     if platform.system() != "Windows":
         # trunk-ignore(bandit/B603)
         subprocess.run([sys.executable, "-m", "venv", "venv"], check=True)
@@ -50,6 +56,9 @@ def create_env_file(creds: list):
 
 
 def clear():
+    """Clear the screen.
+    Non-platform specific.
+    """
     if platform.system() == "Windows":
         os.system("cls")
     else:
@@ -57,9 +66,13 @@ def clear():
 
 
 def get_credentials():
-    """Gets credentials.
+    """Recieve credentials for the self bot.
     And later returns them as a list for .env use.
     """
+    print(
+        'Any input that "doesn\'t" work just have hidden echo.\n'
+        "They work the same as the ones you can see, paste away."
+    )
     discord_token = getpass(prompt="Enter Discord token: ")
     spotify_client_id = input("Enter Spotify application client ID: ")
     spotify_client_secret = getpass(prompt="Enter Spotify application client secret: ")
@@ -67,7 +80,7 @@ def get_credentials():
         if sys.argv[1] == "redirect":
             print(
                 "Your redirect URI can literally just be http://localhost/callback"
-                "it truly doesn't matter"
+                " it truly doesn't matter"
             )
             spotify_redirect_uri = input("Enter Spotify application redirect URI: ")
     except IndexError:
@@ -85,8 +98,8 @@ def get_credentials():
 
 
 def main():
-    """Main function.
-    generates a .env file if it doesn't exist and runs bot.py with credentials given.
+    """Start the self bot.
+    and generates a .env file if it doesn't exist and runs bot.py with credentials given.
     """
     if not os.path.isfile(".env"):
         create_env_file(get_credentials())
