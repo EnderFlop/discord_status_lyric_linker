@@ -2,7 +2,7 @@ import os
 import signal
 import sys
 import time
-from ..start import clear
+from .. import clear
 
 import fpstimer
 import gevent.monkey
