@@ -129,7 +129,9 @@ if __name__ == "__main__":
     try:
         while True:
             # time is slept inside main()
-            last_played_line, last_played_song = main(spotify_access, last_played_line, last_played_song)
+            last_played_line, last_played_song = main(
+                spotify_access, last_played_line, last_played_song
+            )
     except TypeError as e:
         print(e)
         TOKEN = auth.get_cached_token()["access_token"]
