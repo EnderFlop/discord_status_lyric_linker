@@ -56,7 +56,7 @@ def main(spotify, line_last_played):
         track_id = song["item"]["uri"].split(":")[-1]
         current_time = song["progress_ms"]
         formatted_currently_playing = f"Currently playing: {song['item']['name']} -- {song['item']['artists'][0]['name']}"
-        print_if_different(formatted_currently_playing, song_last_line)
+        print_if_different(formatted_currently_playing)
         lyrics = requests.get(
             f"https://spotify-lyric-api.herokuapp.com/?trackid={track_id}", timeout=10
         ).json()
