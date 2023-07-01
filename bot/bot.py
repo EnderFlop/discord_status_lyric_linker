@@ -8,8 +8,10 @@ import gevent.monkey
 import grequests
 import requests
 import spotipy
+from dotenv import load_dotenv
 from spotipy.oauth2 import SpotifyOAuth
 
+load_dotenv()
 gevent.monkey.patch_socket()
 
 API_TOKEN = os.environ.get("DISCORD_AUTH")  # https://discordhelp.net/discord-token
@@ -40,9 +42,10 @@ def main(sp, last_played_song, line_last_played):
 
         track_id = song["item"]["uri"].split(":")[-1]
         current_time = song["progress_ms"]
-        #formatted_currently_playing = (
-        #    f"{song['item']['name']} -- {song['item']['artists'][0]['name']}"
-        #)
+        formatted_currently_playing = (
+            f"{song['item']['name']} -- {song['item']['artists'][0]['name']}"
+        )
+        print(formatted_currently_playing)
         lyrics = requests.get(
             f"https://spotify-lyric-api.herokuapp.com/?trackid={track_id}", timeout=10
         ).json()
