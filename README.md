@@ -1,9 +1,9 @@
 # Display lyrics live on Discord
-### Works on Windows and Linux
+
 :warning: **Selfbots are not allowed in Discord TOS! Use at your own risk! See [HERE](https://gist.github.com/nomsi/2684f5692cad5b0ceb52e308631859fd) for more information. This bot follows those rules and only sends Discord requests as fast as the lyrics change.** :warning:
 
 **Works on desktop, mobile, and web Spotify clients!**
-_Compatibility guaranteed on Linux (Arch and Ubuntu was used) and Windows (Windows 10/11 was used)_
+_Compatibility guaranteed on Linux (Ubuntu was used) and Windows (Windows 10 was used)_
 
 This bot works by running constantly and asking Spotify what song you're currently listening to. If it has lyrics, it changes your Discord status to the currently playing lyric! All lyric and timesync information is courtesy of [akashrchandran](https://github.com/akashrchandran/spotify-lyrics-api)'s fantastic spotify-lyrics-api project.
 
