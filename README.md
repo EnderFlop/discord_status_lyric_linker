@@ -10,7 +10,7 @@ This bot works by running constantly and asking Spotify what song you're current
 ## Step 1: Get the code
 Clone the code down to your computer. You will need to download [Git](https://git-scm.com/downloads) or if you are on Linux, use your distro's package manager.
 
-    git clone https://github.com/EnderFlop/discord_status_lyric_linker
+    git clone https://github.com/LunarN0v4/discord_status_lyric_linker
 
 ## Step 2: Create a Spotify Developer App
 Follow the workflow in the [Spotify for Developers Dashboard](https://developer.spotify.com/dashboard/create) and create an application. Save the Client ID, Client Secret, and Redirect URI for later.
