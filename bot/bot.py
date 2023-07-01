@@ -23,6 +23,13 @@ SCOPE = "user-read-currently-playing"
 TIMER = fpstimer.FPSTimer(2)
 
 
+def print_if_different(text):
+    global last_line
+    if text != last_line:
+        print(text)
+        last_line = text
+
+
 def main(spotify, line_last_played, last_song_played):
     try:
         song = spotify.current_user_playing_track()
@@ -45,9 +52,7 @@ def main(spotify, line_last_played, last_song_played):
         formatted_currently_playing = (
             f"{song['item']['name']} -- {song['item']['artists'][0]['name']}"
         )
-        if formatted_currently_playing != last_song_played:
-            print(formatted_currently_playing)
-            formatted_currently_playing = last_song_played
+        print_if_different(formatted_currently_playing)
         lyrics = requests.get(
             f"https://spotify-lyric-api.herokuapp.com/?trackid={track_id}", timeout=10
         ).json()
