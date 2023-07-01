@@ -22,7 +22,7 @@ CUSTOM_STATUS = os.environ.get("STATUS")
 SCOPE = "user-read-currently-playing"
 TIMER = fpstimer.FPSTimer(2)
 
-
+last_line = ""
 def print_if_different(text):
     global last_line
     if text != last_line:
@@ -145,3 +145,6 @@ if __name__ == "__main__":
         spotify_access = spotipy.Spotify(TOKEN)
         print(f"Error! {str(e)} \nAlso reauthenticating Spotify.")
         time.sleep(3)
+
+    except KeyboardInterrupt:
+        sys.exit(0)
