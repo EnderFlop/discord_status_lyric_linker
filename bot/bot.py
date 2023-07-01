@@ -89,7 +89,7 @@ def main(spotify, line_last_played):
             if (
                 line_last_played != next_line
             ):  # no need to update if the line hasn't changed.
-                if next_line != "":
+                if next_line != "♪" or next_line != "":
                     status_req = grequests.patch(
                         url="https://discord.com/api/v6/users/@me/settings",
                         headers={"authorization": API_TOKEN},
