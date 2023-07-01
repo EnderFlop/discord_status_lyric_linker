@@ -1,4 +1,5 @@
-
+# PLEASE DO NOTE THAT THIS WAS MADE FOR LINUX, NOT WINDOWS, PLEASE ATTACH THE "Windows" TAG TO YOUR ISSUE REPORTS IF YOU ARE RUNNING THIS ON WINDOWS.  
+Read on after this!  
 # Display lyrics live on Discord!
 :warning: **Selfbots are not allowed in Discord TOS! Use at your own risk! See [HERE](https://gist.github.com/nomsi/2684f5692cad5b0ceb52e308631859fd) for more information. This bot follows those rules and only sends Discord requests as fast as the lyrics change.** :warning:
 
