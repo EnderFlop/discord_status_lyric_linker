@@ -2,6 +2,7 @@ import os
 import signal
 import sys
 import time
+from ..start import clear
 
 import fpstimer
 import gevent.monkey
@@ -22,10 +23,12 @@ CUSTOM_STATUS = os.environ.get("STATUS")
 SCOPE = "user-read-currently-playing"
 TIMER = fpstimer.FPSTimer(2)
 
+
 last_line = ""
 def print_if_different(text):
     global last_line
     if text != last_line:
+        clear()
         print(text)
         last_line = text
 
