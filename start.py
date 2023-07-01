@@ -49,6 +49,11 @@ def create_env_file(creds: list):
         file.write(f"SPOTIFY_REDIRECT = {creds[3]}\n")
         file.write(f"STATUS = {creds[4]}\n")
 
+def clear():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
 
 def get_credentials():
     """Gets credentials.
@@ -77,16 +82,6 @@ def get_credentials():
         custom_status,
     ]
 
-
-def signal_handler(term_signal, process):
-    """Signal handler.
-        Sends a SIGINT signal to process
-    """
-    process.send_signal(term_signal.SIGINT)
-    process.wait()
-    sys.exit(0)
-
-
 def main():
     """Main function.
     generates a .env file if it doesn't exist and runs bot.py with credentials given.
@@ -95,6 +90,7 @@ def main():
         create_env_file(get_credentials())
 
     venv()
+    clear()
     print("Initialized, starting...")
     while True:
         try:
@@ -110,12 +106,6 @@ def main():
             print("Restarting because script crashed...")
         except KeyboardInterrupt:
             break
-
-    time.sleep(1)
-
-    signal.signal(signal.SIGINT, signal_handler)
-
-    process.wait()
 
 
 if __name__ == "__main__":

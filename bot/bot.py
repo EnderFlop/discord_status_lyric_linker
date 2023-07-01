@@ -23,7 +23,7 @@ SCOPE = "user-read-currently-playing"
 TIMER = fpstimer.FPSTimer(2)
 
 
-def main(spotify, line_last_played):
+def main(spotify, line_last_played, last_song_played):
     try:
         song = spotify.current_user_playing_track()
 
@@ -45,7 +45,8 @@ def main(spotify, line_last_played):
         formatted_currently_playing = (
             f"{song['item']['name']} -- {song['item']['artists'][0]['name']}"
         )
-        print(formatted_currently_playing)
+        if formatted_currently_playing != last_song_played:
+            print(formatted_currently_playing)
         lyrics = requests.get(
             f"https://spotify-lyric-api.herokuapp.com/?trackid={track_id}", timeout=10
         ).json()
@@ -115,6 +116,7 @@ def signal_handler():
 
 if __name__ == "__main__":
     last_played_line = ""
+    last_played_song = ""
     auth = SpotifyOAuth(SPOTIFY_ID, SPOTIFY_SECRET, SPOTIFY_REDIRECT, scope=SCOPE)
     if ".cache" in os.listdir("./"):
         TOKEN = auth.get_cached_token()["access_token"]
@@ -127,9 +129,7 @@ if __name__ == "__main__":
     try:
         while True:
             # time is slept inside main()
-             last_played_line = main(
-                spotify_access, last_played_line
-            )
+            last_played_line, last_played_song = main(spotify_access, last_played_line, last_played_song)
     except TypeError as e:
         print(e)
         TOKEN = auth.get_cached_token()["access_token"]
