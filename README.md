@@ -1,5 +1,5 @@
 # Display lyrics live on Discord
-
+### Works on Windows and Linux
 :warning: **Selfbots are not allowed in Discord TOS! Use at your own risk! See [HERE](https://gist.github.com/nomsi/2684f5692cad5b0ceb52e308631859fd) for more information. This bot follows those rules and only sends Discord requests as fast as the lyrics change.** :warning:
 
 **Works on desktop, mobile, and web Spotify clients!**
