@@ -7,29 +7,11 @@ import signal
 import subprocess
 import sys
 import time
-
+from getpass import getpass
 # N0v4 what kind of crack are you smoking?
 # Anyway I fixed a lot of the code base.
 # Soon gonna check if it works on Windows.
 
-
-
-try:
-    from rebullet import Password
-except ImportError:
-    if platform.system() == "Windows":
-        # trunk-ignore(bandit/B603)
-        subprocess.run(
-            [
-                (pathlib.PurePath(sys.executable).parent / "Scripts" / "pip.exe"),
-                "install",
-                "rebullet",
-            ],
-            check=True,
-        )
-    else:
-        # trunk-ignore(bandit/B603)
-        subprocess.run([sys.executable, "-m", "pip", "install", "rebullet"], check=True)
 
 def venv():
     if platform.system() != "Windows":
@@ -72,11 +54,9 @@ def get_credentials():
     """Gets credentials.
         And later returns them as a list for .env use.
     """
-    discord_token_prompt = Password("Enter Discord token: ")
-    discord_token = discord_token_prompt.launch()
+    discord_token = getpass(prompt="Enter Discord token: ")
     spotify_client_id = input("Enter Spotify application client ID: ")
-    spotify_client_secret_prompt = Password("Enter Spotify application client secret: ")
-    spotify_client_secret = spotify_client_secret_prompt.launch()
+    spotify_client_secret = getpass(prompt="Enter Spotify application client secret: ")
     try:
         if sys.argv[1] == "redirect":
             print(
