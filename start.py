@@ -1,13 +1,12 @@
 import os
 import pathlib
 import platform
-import signal
 
 # trunk-ignore(bandit/B404)
 import subprocess
 import sys
-import time
 from getpass import getpass
+
 # N0v4 what kind of crack are you smoking?
 # Anyway I fixed a lot of the code base.
 # Soon gonna check if it works on Windows.
@@ -49,15 +48,17 @@ def create_env_file(creds: list):
         file.write(f"SPOTIFY_REDIRECT = {creds[3]}\n")
         file.write(f"STATUS = {creds[4]}\n")
 
+
 def clear():
     if platform.system() == "Windows":
         os.system("cls")
     else:
         os.system("clear")
 
+
 def get_credentials():
     """Gets credentials.
-        And later returns them as a list for .env use.
+    And later returns them as a list for .env use.
     """
     discord_token = getpass(prompt="Enter Discord token: ")
     spotify_client_id = input("Enter Spotify application client ID: ")
@@ -81,6 +82,7 @@ def get_credentials():
         spotify_redirect_uri,
         custom_status,
     ]
+
 
 def main():
     """Main function.
