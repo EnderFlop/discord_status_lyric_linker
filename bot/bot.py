@@ -162,12 +162,12 @@ if __name__ == "__main__":
             # time is slept inside main()
             last_played_line = main(spotify_access, last_played_line)
 
+    except KeyboardInterrupt:
+        sys.exit(0)
+
     except TypeError as e:
         print(e)
         TOKEN = auth.get_cached_token()["access_token"]
         spotify_access = spotipy.Spotify(TOKEN)
         print(f"Error! {str(e)} \nAlso reauthenticating Spotify.")
         time.sleep(3)
-
-    except KeyboardInterrupt:
-        sys.exit(0)
