@@ -28,10 +28,6 @@ If you don't have Python, [install the latest version now](https://www.python.or
 Use a command prompt or terminal and run "python ./start.py" ( "python start.py" if you're running plain cmd or "python .\start.py" in powershell) 
 in the same directory as the "bot.py" and "start.py"
 
-## Warning for Windows users
-
-There is no warning for windows users. I am just keeping it here to spite N0v4 for their skill issues.
-
 ## The script only works if it is running. There are ways to start running a Python script on system startup, or I have mine running 24/7 on my Raspberry Pi. Just remember to start the script!\*\*
 
 If you are on Linux, you can do "crontab -e" to edit crontab as your current user (or if you feel dangerous, do "sudo crontab -e", it will have a better success rate and runs before you login) and then enter "@reboot python /path/to/start.py" (replace "/path/to/start.py" with the real path to the start.py) and save it. This will run it automatically on reboot.
