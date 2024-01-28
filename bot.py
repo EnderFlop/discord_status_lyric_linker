@@ -97,7 +97,7 @@ def on_new_song(sp):
     return song, lyrics
 
 def get_lyrics(track_id):
-    return requests.get(f"https://spotify-lyric-api-984e7b4face0.herokuapp.com//?trackid={track_id}").json()
+    return requests.get(f"https://spotify-lyrics-private-server.vercel.app///?trackid={track_id}").json()
 
 def get_spotipy():
     print("SPOTIFY: RETRIVING/REFRESHING TOKEN")
